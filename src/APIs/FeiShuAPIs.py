@@ -2,7 +2,6 @@ import requests
 import json
 import os
 from dotenv import load_dotenv, find_dotenv
-from src.APIs.OSSAPIs import OSSManager
 
 class FeishuAPI:
     def __init__(self):
@@ -69,25 +68,6 @@ class FeishuAPI:
                             "content": f"I received your message: {content}",
                             "tag": "lark_md"
                         }
-                    },
-                    {
-                        "tag": "hr"
-                    },
-                    {
-                        "tag": "action",
-                        "actions": [
-                            {
-                                "tag": "button",
-                                "text": {
-                                    "content": "Update",
-                                    "tag": "plain_text"
-                                },
-                                "type": "default",
-                                "value": {
-                                    "key": "update_key"
-                                }
-                            }
-                        ]
                     }
                 ]
             })
@@ -135,41 +115,22 @@ class FeishuAPI:
         except Exception as e:
             logger.error(f"Error: missing key {e}") 
 
-        # if not card_template_name:
-        #     # Default content if no template is used
-        #     payload_content = json.dumps({
-        #         "config": {
-        #             "wide_screen_mode": True
-        #         },
-        #         "elements": [
-        #             {
-        #                 "tag": "div",
-        #                 "text": {
-        #                     "content": f"I received your message: {content}",
-        #                     "tag": "lark_md"
-        #                 }
-        #             },
-        #             {
-        #                 "tag": "hr"
-        #             },
-        #             {
-        #                 "tag": "action",
-        #                 "actions": [
-        #                     {
-        #                         "tag": "button",
-        #                         "text": {
-        #                             "content": "Update",
-        #                             "tag": "plain_text"
-        #                         },
-        #                         "type": "default",
-        #                         "value": {
-        #                             "key": "update_key"
-        #                         }
-        #                     }
-        #                 ]
-        #             }
-        #         ]
-        #     })
+        if not card_template_name:
+            # Default content if no template is used
+            payload_content = json.dumps({
+                "config": {
+                    "wide_screen_mode": True
+                },
+                "elements": [
+                    {
+                        "tag": "div",
+                        "text": {
+                            "content": f"This is my answer: {content}",
+                            "tag": "lark_md"
+                        }
+                    }
+                ]
+            })
 
         url = f'https://open.feishu.cn/open-apis/im/v1/messages/{message_id}'
         headers = {
@@ -207,23 +168,6 @@ class FeishuAPI:
             with open(file_path, 'wb') as f:
                 f.write(response.content)
                 print(file_path)
-                # 调用oss上传服务器
-                # 创建OSSManager实例
-                access_key_id = os.getenv('ACCESS_KEY_ID')
-                access_key_secret = os.getenv('ACCESS_KEY_SECRET')
-                endpoint = os.getenv('ENDPOINT')
-                bucket_name = 'bucket-feishu'
-                oss_manager = OSSManager(access_key_id, access_key_secret, endpoint, bucket_name)
-
-                # OSS上的目录前缀
-                oss_key_prefix = 'video/' + file_name
-
-                # 上传文件
-                upload_status = oss_manager.upload_file(file_path, oss_key_prefix)
-                if upload_status == 200:
-                    print(f"File uploaded successfully to OSS as {oss_key_prefix}")
-                else:
-                    print(f"Failed to upload file to OSS. Status code: {upload_status}")
 
             print(f"File downloaded successfully as {file_name}")
             return file_name
