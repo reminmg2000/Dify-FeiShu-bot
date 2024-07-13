@@ -9,9 +9,10 @@ load_dotenv(dotenv_path)
 
 # 从环境变量中获取 API 密钥
 API_KEY = os.getenv('DIFY_API_KEY')
+API_URL = os.getenv('DIFY_API_URL')
 
 def call_dify_workflow(query, user, conversation_id="", response_mode="streaming", files=[]):
-    url = 'https://api.hackathon.difyai.com/v1/chat-messages'
+    url = f'{API_URL}chat-messages'
     headers = {
         'Authorization': f'Bearer {API_KEY}',
         'Content-Type': 'application/json'
