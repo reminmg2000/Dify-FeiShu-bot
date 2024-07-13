@@ -12,13 +12,15 @@ class FeishuAPI:
         # 从环境变量中获取 API 密钥
         self.APP_ID = os.getenv('APP_ID')
         self.APP_SECRET = os.getenv('APP_SECRET')
+        self.FEISHU_API_URL = os.getenv('FEISHU_API_URL')
+
 
         # 从环境变量中获取卡片模板
         feishu_card_templates_str = os.getenv('FEISHU_CARD_TEMPLATES')
         self.FEISHU_CARD_TEMPLATES = json.loads(feishu_card_templates_str)
     
     def get_access_token(self):
-        url = 'https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal'
+        url = f'{self.FEISHU_API_URL}auth/v3/app_access_token/internal'
         headers = {
             'Content-Type': 'application/json; charset=utf-8'
         }
@@ -72,7 +74,7 @@ class FeishuAPI:
                 ]
             })
 
-        url = f'https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type={receive_id_type}'
+        url = f'{self.FEISHU_API_URL}im/v1/messages?receive_id_type={receive_id_type}'
         headers = {
             'Authorization': f'Bearer {access_token}',
             'Content-Type': 'application/json; charset=utf-8'
@@ -132,7 +134,7 @@ class FeishuAPI:
                 ]
             })
 
-        url = f'https://open.feishu.cn/open-apis/im/v1/messages/{message_id}'
+        url = f'{self.FEISHU_API_URL}im/v1/messages/{message_id}'
         headers = {
             'Authorization': f'Bearer {access_token}',
             'Content-Type': 'application/json; charset=utf-8'
@@ -151,7 +153,7 @@ class FeishuAPI:
     def download_file(self, message_id, file_key, type):
         print("开始下载文件")
         access_token = self.get_access_token()
-        url = f'https://open.feishu.cn/open-apis/im/v1/messages/{message_id}/resources/{file_key}?type={type}'
+        url = f'{self.FEISHU_API_URL}im/v1/messages/{message_id}/resources/{file_key}?type={type}'
         headers = {
             'Authorization': f'Bearer {access_token}'
         }
