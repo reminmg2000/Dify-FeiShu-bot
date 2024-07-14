@@ -67,7 +67,7 @@ class FeishuAPI:
                     {
                         "tag": "div",
                         "text": {
-                            "content": f"I received your message: {content}",
+                            "content": content,
                             "tag": "lark_md"
                         }
                     }
@@ -127,7 +127,7 @@ class FeishuAPI:
                     {
                         "tag": "div",
                         "text": {
-                            "content": f"This is my answer: {content}",
+                            "content": content,
                             "tag": "lark_md"
                         }
                     }
