@@ -18,9 +18,7 @@ def call_dify_workflow(query, user, conversation_id="", response_mode="streaming
         'Content-Type': 'application/json'
     }
     payload = {
-        "inputs": {
-            'teching_points': '荣和教学点'
-        },
+        "inputs": {},
         "query": query,
         "response_mode": response_mode,
         "conversation_id": conversation_id,
