@@ -175,11 +175,17 @@ def handle_message_received_v2(event):
     
     else:
         try:
-            message_content = event["message"]["content"]                   # 获取消息内容
+            # message_content = event["message"]["content"]                   # 获取消息内容
+            message_content_str = event["message"]["content"]                   # 获取消息内容
+            # 将字符串解析为 JSON 对象
+            message_content_json = json.loads(message_content_str)
+            # 从 JSON 对象中提取 "text" 字段的值
+            message_content = message_content_json['text']
+            
             chat_id = event["message"]["chat_id"]                           # 获取聊天 ID
             logger.info(f"Message content: {message_content}")              # 记录消息内容
             
-            initial_content = "I received your message: " + message_content
+            initial_content = message_content
             
             # 发送消息等待卡片
             message_response = feishu_api.send_message('chat_id', chat_id, initial_content, "waiting_message_card")  # 发送消息
