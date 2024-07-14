@@ -30,7 +30,7 @@ class DifyBot(FeishuBot):
             chat_id = event["message"]["chat_id"]                           # 获取聊天 ID
             logger.info(f"Message content: {message_content}")              # 记录消息内容
             
-            initial_content = "I received your message: " + message_content
+            initial_content = message_content
             
             # 发送消息等待卡片
             message_response = feishu_api.send_message(
